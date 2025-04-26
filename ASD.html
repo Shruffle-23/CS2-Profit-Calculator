@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CS2 Profit Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti" defer></script>
+  <style>
+    body {
+      background-color: #0d1117;
+      font-family: 'Poppins', sans-serif;
+      color: #c9d1d9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #161b22;
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
+      width: 100%;
+      max-width: 420px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #f0dc5a;
+      font-size: 26px;
+      text-shadow: 0 0 8px #f0dc5a44;
+    }
+    .input-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #58a6ff;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background-color: #21262d;
+      color: #fff;
+      font-size: 15px;
+      box-shadow: inset 0 0 5px #000;
+    }
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 5px #58a6ff;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #238636;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s ease-in-out;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #2ea043;
+    }
+    .result {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 18px;
+    }
+    .buy {
+      color: #39d353;
+      font-weight: bold;
+      text-shadow: 0 0 8px #39d35399;
+    }
+    .ignore {
+      color: #f85149;
+      font-weight: bold;
+      text-shadow: 0 0 8px #f8514999;
+    }
+    .affiliate-links {
+      margin-top: 30px;
+    }
+    .affiliate-btn {
+      margin-top: 12px;
+      width: 100%;
+      padding: 12px;
+      background-color: #f0dc5a;
+      color: #161b22;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+    .affiliate-btn:hover {
+      background-color: #ffe977;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Counter Strike 2 Profit Calculator</h1>
+
+    <div class="input-group">
+      <label for="csfloat">CSFloat Price ($)</label>
+      <input type="number" id="csfloat" placeholder="e.g. 5.00">
+    </div>
+
+    <div class="input-group">
+      <label for="steam">Steam Market Price ($)</label>
+      <input type="number" id="steam" placeholder="e.g. 7.00">
+    </div>
+
+    <button onclick="calculateProfit()">Calculate Profit</button>
+
+    <div class="result" id="result"></div>
+
+    <div class="affiliate-links">
+      <a href="https://csfloat.com" target="_blank">
+        <button class="affiliate-btn">Browse Deals on CSFloat</button>
+      </a>
+      <a href="https://steamcommunity.com/market" target="_blank">
+        <button class="affiliate-btn">Steam Community Market</button>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function calculateProfit() {
+      const csfloatPrice = parseFloat(document.getElementById("csfloat").value);
+      const steamPrice = parseFloat(document.getElementById("steam").value);
+
+      if (isNaN(csfloatPrice) || isNaN(steamPrice)) {
+        document.getElementById("result").innerHTML = "<p>Please enter valid numbers.</p>";
+        return;
+      }
+
+      const steamAfterFees = steamPrice * 0.85;
+      const profit = steamAfterFees - csfloatPrice;
+      const profitPercent = (profit / csfloatPrice) * 100;
+
+      const recommendation = profitPercent >= 10 
+        ? "<span class='buy'>Buy</span>" 
+        : "<span class='ignore'>Ignore</span>";
+
+      document.getElementById("result").innerHTML = `
+        <p>Profit After Fees: $${profit.toFixed(2)}</p>
+        <p>Profit %: ${profitPercent.toFixed(2)}%</p>
+        <p>Recommendation: ${recommendation}</p>
+      `;
+
+      if (profitPercent >= 50) {
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>
